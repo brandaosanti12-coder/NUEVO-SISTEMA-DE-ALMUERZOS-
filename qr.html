@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>QR Retorno</title>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<style>
+body {
+  text-align: center;
+  font-family: Arial;
+  padding: 50px;
+}
+
+#qr {
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>QR Retorno del Día</h2>
+<canvas id="qr"></canvas>
+
+<script>
+const hoy = new Date().toISOString().split("T")[0];
+
+const url = "https://brandaosanti12-coder.github.io/CONTROL-BIOMETRICO/retorno.html?token=" + hoy;
+
+QRCode.toCanvas(document.getElementById('qr'), url, function (error) {
+  if (error) console.error(error);
+});
+</script>
+
+</body>
+</html>
