@@ -8,112 +8,28 @@
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 <style>
-  :root {
-    --primary: #4f46e5;
-    --success: #10b981;
-    --danger: #ef4444;
-    --bg: #f3f4f6;
-    --card: #ffffff;
-    --text-main: #1f2937;
-    --border: #e5e7eb;
-  }
-  
-  body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--bg);
-    color: var(--text-main);
-    padding: 30px 20px;
-    margin: 0;
-  }
-
-  .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    background: var(--card);
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-  }
-
-  h2 {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 25px;
-    border-bottom: 2px solid var(--border);
-    padding-bottom: 15px;
-  }
-
-  .actions {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-
-  button {
-    font-family: inherit;
-    font-weight: 600;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 14px;
-  }
-
-  .btn-primary { background: var(--primary); color: white; }
-  .btn-primary:hover { background: #4338ca; }
-  
-  .btn-success { background: var(--success); color: white; }
-  .btn-success:hover { background: #059669; }
-  
-  .btn-danger { background: var(--danger); color: white; }
-  .btn-danger:hover { background: #dc2626; }
-
-  .table-container {
-    overflow-x: auto;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-  }
-
-  th, td {
-    padding: 14px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-
-  th {
-    background-color: #f9fafb;
-    font-weight: 600;
-    color: #4b5563;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-  }
-
-  tr:last-child td { border-bottom: none; }
-  tr:hover { background-color: #f9fafb; }
-
-  .rojo {
-    color: var(--danger);
-    font-weight: 700;
-    background: #fef2f2;
-    padding: 4px 8px;
-    border-radius: 6px;
-    display: inline-block;
-  }
+  :root { --primary: #4f46e5; --success: #10b981; --danger: #ef4444; --bg: #f3f4f6; --card: #ffffff; --text-main: #1f2937; --border: #e5e7eb; }
+  body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); padding: 30px 20px; margin: 0; }
+  .container { max-width: 1000px; margin: 0 auto; background: var(--card); padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
+  .logo { max-width: 140px; height: auto; margin: 0 auto 15px auto; display: block; }
+  h2 { font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 25px; border-bottom: 2px solid var(--border); padding-bottom: 15px; text-align: center; }
+  .actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  button { font-family: inherit; font-weight: 600; padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 14px; }
+  .btn-primary { background: var(--primary); color: white; } .btn-primary:hover { background: #4338ca; }
+  .btn-success { background: var(--success); color: white; } .btn-success:hover { background: #059669; }
+  .btn-danger { background: var(--danger); color: white; } .btn-danger:hover { background: #dc2626; }
+  .table-container { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; background: white; }
+  th, td { padding: 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background-color: #f9fafb; font-weight: 600; color: #4b5563; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+  tr:last-child td { border-bottom: none; } tr:hover { background-color: #f9fafb; }
+  .rojo { color: var(--danger); font-weight: 700; background: #fef2f2; padding: 4px 8px; border-radius: 6px; display: inline-block; }
 </style>
 </head>
 <body>
 
 <div class="container">
+  <img src="logo_itsanet.jpg" alt="Logo ITSANET" class="logo">
   <h2>Panel de Registros - Almuerzos</h2>
 
   <div class="actions">
@@ -125,13 +41,7 @@
   <div class="table-container">
     <table>
       <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Fecha</th>
-          <th>Salida</th>
-          <th>Regreso</th>
-          <th>Tiempo</th>
-        </tr>
+        <tr><th>Nombre</th><th>Fecha</th><th>Salida</th><th>Regreso</th><th>Tiempo</th></tr>
       </thead>
       <tbody id="tabla"></tbody>
     </table>
@@ -139,19 +49,13 @@
 </div>
 
 <script type="module">
-// AQUÍ VA EXACTAMENTE TU MISMO CÓDIGO JAVASCRIPT DE admin.html
-// (No modifiqué el script para garantizar que funcione idéntico)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfigProd = { apiKey: "AIzaSyCyzE_spj6e0VASt5FP50_5m2Ya-GJloM4", authDomain: "registro-bionetrico.firebaseapp.com", projectId: "registro-bionetrico" };
-const appProd = initializeApp(firebaseConfigProd);
-const dbProd = getFirestore(appProd);
-
+const appProd = initializeApp(firebaseConfigProd); const dbProd = getFirestore(appProd);
 const firebaseConfigBiometrico = { apiKey: "AIzaSyB14PmZWs0Yjlx2WEqqKoHyvEHrqTweCrA", authDomain: "biometrico-empleados.firebaseapp.com", projectId: "biometrico-empleados", storageBucket: "biometrico-empleados.firebasestorage.app", messagingSenderId: "669152231455", appId: "1:669152231455:web:d2f7ae91e278eb854bd52a" };
-const appBiometrico = initializeApp(firebaseConfigBiometrico, "AppBiometrico");
-const dbBiometrico = getFirestore(appBiometrico);
-
+const appBiometrico = initializeApp(firebaseConfigBiometrico, "AppBiometrico"); const dbBiometrico = getFirestore(appBiometrico);
 const tabla = document.getElementById("tabla");
 
 function formatearHora(timestamp) { if (!timestamp || !timestamp.seconds) return ""; return new Date(timestamp.seconds * 1000).toLocaleTimeString(); }
@@ -163,18 +67,48 @@ function calcularTiempo(salida, regreso) {
 }
 
 async function cargar() {
-  const querySnapshot = await getDocs(collection(dbProd, "registros"));
-  tabla.innerHTML = "";
+  const querySnapshot = await getDocs(collection(dbProd, "registros")); tabla.innerHTML = "";
   querySnapshot.forEach(docSnap => {
-    const d = docSnap.data();
-    const tiempo = calcularTiempo(d.salida, d.regreso);
-    tabla.innerHTML += `<tr><td>${d.nombre}</td><td>${d.fecha}</td><td>${formatearHora(d.salida)}</td><td>${formatearHora(d.regreso)}</td><td><span class="${tiempo.exceso ? 'rojo' : ''}">${tiempo.texto}</span></td></tr>`;
+    const d = docSnap.data(); const salida = formatearHora(d.salida); const regreso = formatearHora(d.regreso); const tiempo = calcularTiempo(d.salida, d.regreso);
+    tabla.innerHTML += `<tr><td>${d.nombre}</td><td>${d.fecha}</td><td>${salida}</td><td>${regreso}</td><td><span class="${tiempo.exceso ? 'rojo' : ''}">${tiempo.texto}</span></td></tr>`;
   });
 }
 
-window.exportar = async function () { /* Tu lógica de exportar csv intacta */ };
-document.getElementById('btn-descargar-reporte').addEventListener('click', async () => { /* Tu lógica de excel intacta */ });
-window.borrarTodo = async function () { /* Tu lógica de borrar intacta */ };
+window.exportar = async function () {
+  const querySnapshot = await getDocs(collection(dbProd, "registros")); let csv = "Nombre;Fecha;Salida;Regreso;Tiempo\n";
+  querySnapshot.forEach(docSnap => {
+    const d = docSnap.data(); const salida = formatearHora(d.salida); const regreso = formatearHora(d.regreso); const tiempo = calcularTiempo(d.salida, d.regreso);
+    csv += `${d.nombre};${d.fecha};${salida};${regreso};${tiempo.texto}\n`;
+  });
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" }); const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href = url; a.download = "registros_almuerzos.csv"; a.click();
+};
+
+document.getElementById('btn-descargar-reporte').addEventListener('click', async () => {
+    const btn = document.getElementById('btn-descargar-reporte'); btn.disabled = true; btn.innerText = "Conectando...";
+    try {
+        const querySnapshot = await getDocs(collection(dbBiometrico, "marcaciones")); const registrosExcel = [];
+        querySnapshot.forEach((docSnap) => {
+            const datos = docSnap.data();
+            const linkEntrada = datos.enlaceGoogleMapsEntrada ? (datos.enlaceGoogleMapsEntrada.match(/href="([^"]*)/)?.[1] || "-") : "-";
+            const linkSalida = datos.enlaceGoogleMapsSalida ? (datos.enlaceGoogleMapsSalida.match(/href="([^"]*)/)?.[1] || "-") : "-";
+            registrosExcel.push({ "Fecha": datos.fecha, "Cédula": datos.cedula, "Nombres": datos.nombre, "Ciudad": datos.ciudad, "Entrada": datos.horaEntrada || "-", "Atraso": datos.atraso || "-", "Mapa Entrada": linkEntrada, "Salida": datos.horaSalida || "Sin marcar", "Trabajado": datos.tiempoTrabajado || "-", "Horas Extras": datos.horasExtras || "-", "Mapa Salida": linkSalida, "Estado": datos.estado });
+        });
+        if (registrosExcel.length === 0) { alert("No hay registros guardados en la base de datos aún."); btn.disabled = false; btn.innerText = "Descargar Reporte Personal"; return; }
+        btn.innerText = "Generando archivo Excel...";
+        const hoja = XLSX.utils.json_to_sheet(registrosExcel); const libro = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(libro, hoja, "Asistencia");
+        XLSX.writeFile(libro, "Reporte_Asistencia.xlsx");
+        btn.disabled = false; btn.innerText = "Descargar Reporte Personal";
+    } catch (error) { console.error(error); alert("Hubo un error al descargar los datos. Revisa la consola."); btn.disabled = false; btn.innerText = "Descargar Reporte Personal"; }
+});
+
+window.borrarTodo = async function () {
+  const codigo = prompt("⚠️ Ingrese el código de autorización para eliminar TODOS los registros:");
+  if (codigo !== "12345") { if (codigo !== null) { alert("❌ Código incorrecto. Operación cancelada."); } return; }
+  const querySnapshot = await getDocs(collection(dbProd, "registros"));
+  for (const documento of querySnapshot.docs) { await deleteDoc(doc(dbProd, "registros", documento.id)); }
+  alert("✅ Registros eliminados correctamente"); cargar();
+};
 
 cargar();
 </script>
