@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Registro - Salida Almuerzo</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -19,79 +19,45 @@
     --border-color: #d1d5db;
     --danger-color: #ef4444;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
-    color: var(--text-main);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
+    color: var(--text-main); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;
   }
-
   .box {
-    background: var(--card-bg);
-    padding: 40px 32px;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    background: var(--card-bg); padding: 40px 32px; border-radius: 20px; width: 100%; max-width: 400px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); text-align: center;
   }
-
-  .logo {
-    max-width: 140px;
-    height: auto;
-    margin: 0 auto 15px auto;
-    display: block;
-  }
-
-  .box h2 {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 25px;
-  }
-
+  .logo { max-width: 140px; height: auto; margin: 0 auto 15px auto; display: block; }
+  .box h2 { font-size: 24px; font-weight: 700; color: var(--primary-color); margin-bottom: 25px; }
   .form-group { margin-bottom: 20px; text-align: left; }
   .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
-
   select {
-    font-family: inherit; font-size: 15px; padding: 14px 16px; width: 100%;
-    border: 1px solid var(--border-color); border-radius: 12px; background-color: #f9fafb;
-    color: var(--text-main); cursor: pointer; appearance: none;
+    font-family: inherit; font-size: 15px; padding: 14px 16px; width: 100%; border: 1px solid var(--border-color);
+    border-radius: 12px; background-color: #f9fafb; color: var(--text-main); cursor: pointer; appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat; background-position: right 16px center; background-size: 18px;
-    transition: all 0.2s ease;
+    background-repeat: no-repeat; background-position: right 16px center; background-size: 18px; transition: all 0.2s ease;
   }
   select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15); background-color: #ffffff; }
-
   button {
-    font-family: inherit; font-size: 16px; font-weight: 600; padding: 14px; width: 100%;
-    margin-top: 10px; background-color: var(--primary-color); color: white; border: none;
-    border-radius: 12px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+    font-family: inherit; font-size: 16px; font-weight: 600; padding: 14px; width: 100%; margin-top: 10px;
+    background-color: var(--primary-color); color: white; border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
   }
   button:hover:not(:disabled) { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 10px -1px rgba(79, 70, 229, 0.4); }
   button:disabled { background-color: var(--border-color); color: #9ca3af; cursor: not-allowed; box-shadow: none; }
-
   .status-area { margin-top: 25px; padding-top: 20px; border-top: 1px solid #e5e7eb; }
   #horaSalida { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
   .timer { font-size: 32px; font-weight: 700; color: var(--text-main); font-variant-numeric: tabular-nums; }
   .rojo { color: var(--danger-color) !important; animation: pulse 2s infinite; }
-
   @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 </style>
 </head>
 
 <body>
 
-<div class="box">
-  <img src="logo_itsanet.jpg" alt="Logo ITSANET" class="logo">
-  
+<div class="box" id="contenedorPrincipal">
+  <img src="logo_itsanet.png" alt="Logo ITSANET" class="logo">
   <h2>Salida Almuerzo</h2>
 
   <div class="form-group">
@@ -103,14 +69,12 @@
       <option value="OFICINA">OFICINA</option>
     </select>
   </div>
-
   <div class="form-group">
     <label for="nombre">Nombre del empleado</label>
     <select id="nombre" onchange="verEstado()">
       <option value="">-- Seleccionar --</option>
     </select>
   </div>
-
   <button id="salidaBtn" onclick="registrarSalida()">Registrar Salida</button>
 
   <div class="status-area">
@@ -124,85 +88,41 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const params = new URLSearchParams(window.location.search);
-const token = params.get("token");
-const tipo = params.get("tipo");
-const hoy = new Date().toLocaleDateString('sv-SE');
+const token = params.get("token"); const tipo = params.get("tipo"); const hoy = new Date().toLocaleDateString('sv-SE');
 
-// Validación de Código QR y Fecha
 if (token !== hoy || tipo !== "salida") {
-  document.body.innerHTML = `
-    <div class="box" style="text-align: center;">
-      <img src="logo_itsanet.jpg" alt="Logo ITSANET" class="logo">
-      <h2 style="color: #ef4444; margin:0;">Acceso Denegado</h2>
-      <p style="color: #6b7280; margin-top: 10px;">El código escaneado no es válido para hoy.</p>
-    </div>`;
+  document.getElementById("contenedorPrincipal").innerHTML = `
+    <img src="logo_itsanet.png" alt="Logo ITSANET" class="logo">
+    <h2 style="color: #ef4444; margin:0;">Acceso Denegado</h2>
+    <p style="color: #6b7280; margin-top: 10px;">QR incorrecto o de un día anterior.</p>`;
   throw new Error("Acceso inválido");
 }
 
-// ⏳ SISTEMA ANTI-TRAMPAS (Bloquea recargas de página y demoras)
 const llaveMemoria = "tiempo_salida_" + hoy;
-let tiempoApertura = localStorage.getItem(llaveMemoria);
+let tiempoApertura = sessionStorage.getItem(llaveMemoria);
 
 if (!tiempoApertura) {
-  // Guarda la hora en la que escaneó por primera vez
   tiempoApertura = Date.now();
-  localStorage.setItem(llaveMemoria, tiempoApertura);
+  sessionStorage.setItem(llaveMemoria, tiempoApertura);
 }
 
-// Verificamos al abrir la página si ya pasaron más de 2 minutos (120,000 ms)
-if (Date.now() - parseInt(tiempoApertura) > 120000) {
-  mostrarAlertaCaducado();
-  throw new Error("Tiempo excedido. Recarga bloqueada.");
-}
-
-function mostrarAlertaCaducado() {
-  document.body.innerHTML = `
-    <div class="box" style="text-align: center;">
-      <img src="logo_itsanet.jpg" alt="Logo ITSANET" class="logo">
-      <h2 style="color: #ef4444; margin:0;">¡Tiempo agotado! ⏳</h2>
-      <p style="color: #6b7280; margin-top: 15px; line-height: 1.5;">
-        Para llevar un registro justo, la marcación debe hacerse en el momento exacto de escanear el código. <br><br>
-        <strong>Por favor, vuelve a escanear el QR físico. 😊</strong>
-      </p>
-    </div>`;
-}
-
-// 🔥 FIREBASE
-const app = initializeApp({
-  apiKey: "AIzaSyCyzE_spj6e0VASt5FP50_5m2Ya-GJloM4",
-  authDomain: "registro-bionetrico.firebaseapp.com",
-  projectId: "registro-bionetrico"
-});
+const app = initializeApp({ apiKey: "AIzaSyCyzE_spj6e0VASt5FP50_5m2Ya-GJloM4", authDomain: "registro-bionetrico.firebaseapp.com", projectId: "registro-bionetrico" });
 const db = getFirestore(app);
-
-const empleados = {
-  PLAYA: ["USUARIO DE PRUEBAS","RENE CHICAIZA","KEVIN ESCOBAR","ESTEBAN MALDONADO","RUBEN YANEZ"],
-  FACTURACION: ["STEFANY PISANAN","ANA MOROCHO","MARLON TENE","BORIS CABRERA"],
-  OFICINA: ["BRANDON NAVARRETE","ANDRES SUASTE","HECTOR TORRES","IBETH BERMEO","MARIA JOSE CASTRO","MARIA JOSE SANDOVAL","JIMI CELI"]
-};
+const empleados = { PLAYA: ["RENE CHICAIZA","KEVIN ESCOBAR","ESTEBAN MALDONADO","RUBEN YANEZ"], FACTURACION: ["STEFANY PISANAN","ANA MOROCHO","MARLON TENE"], OFICINA: ["BRANDON NAVARRETE","ANDRES SUASTE","HECTOR TORRES","IBETH BERMEO","MARIA JOSE CASTRO","MARIA JOSE SANDOVAL","JIMI CELI"] };
 
 let timerInterval = null;
 
 window.cargarEmpleados = function () {
-  const area = document.getElementById("area").value;
-  const select = document.getElementById("nombre");
-  select.innerHTML = '<option value="">-- Seleccionar --</option>';
-
-  empleados[area]?.forEach(n => {
-    let o = document.createElement("option"); o.value = n; o.textContent = n; select.appendChild(o);
-  });
-  
-  document.getElementById("horaSalida").innerText = ""; document.getElementById("timer").innerText = "";
-  document.getElementById("timer").classList.remove("rojo"); document.getElementById("salidaBtn").disabled = false;
+  const area = document.getElementById("area").value; const select = document.getElementById("nombre"); select.innerHTML = '<option value="">-- Seleccionar --</option>';
+  empleados[area]?.forEach(n => { let o = document.createElement("option"); o.value = n; o.textContent = n; select.appendChild(o); });
+  document.getElementById("horaSalida").innerText = ""; document.getElementById("timer").innerText = ""; document.getElementById("timer").classList.remove("rojo"); document.getElementById("salidaBtn").disabled = false;
   if (timerInterval) clearInterval(timerInterval);
 };
 
 window.verEstado = async function () {
   const nombre = document.getElementById("nombre").value;
   if (!nombre) { document.getElementById("horaSalida").innerText = ""; document.getElementById("timer").innerText = ""; return; }
-
-  const ref = doc(db, "registros", nombre + "_" + hoy);
-  const snap = await getDoc(ref);
+  const ref = doc(db, "registros", nombre + "_" + hoy); const snap = await getDoc(ref);
   if (timerInterval) clearInterval(timerInterval);
 
   if (snap.exists()) {
@@ -210,47 +130,53 @@ window.verEstado = async function () {
     if (d.salida && d.salida.seconds) {
       const salidaMs = d.salida.seconds * 1000;
       document.getElementById("horaSalida").innerText = "Hora de salida: " + new Date(salidaMs).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-      iniciarTimer(salidaMs, nombre); document.getElementById("salidaBtn").disabled = true;
+      iniciarTimer(salidaMs, nombre); 
+      document.getElementById("salidaBtn").disabled = true; 
     }
-  } else {
-    document.getElementById("salidaBtn").disabled = false; document.getElementById("horaSalida").innerText = ""; document.getElementById("timer").innerText = "";
-  }
+  } else { document.getElementById("salidaBtn").disabled = false; document.getElementById("horaSalida").innerText = ""; document.getElementById("timer").innerText = ""; }
 };
 
 function iniciarTimer(salida, nombre) {
-  const timerElement = document.getElementById("timer");
-  timerElement.classList.remove("rojo");
+  const timerElement = document.getElementById("timer"); timerElement.classList.remove("rojo");
   timerInterval = setInterval(() => {
     const restante = (3600000 - (Date.now() - salida));
     if (restante <= 0) { timerElement.innerText = "TIEMPO EXCEDIDO"; timerElement.classList.add("rojo"); return; }
-    const m = Math.floor(restante/60000).toString().padStart(2, '0');
-    const s = Math.floor((restante%60000)/1000).toString().padStart(2, '0');
+    const m = Math.floor(restante/60000).toString().padStart(2, '0'); const s = Math.floor((restante%60000)/1000).toString().padStart(2, '0');
     timerElement.innerText = `${m}:${s} min`;
   }, 1000);
 }
 
 window.registrarSalida = async function () {
-  // Segunda validación: Al momento de hacer clic en el botón
   if (Date.now() - parseInt(tiempoApertura) > 120000) {
-    mostrarAlertaCaducado();
+    document.getElementById("contenedorPrincipal").innerHTML = `
+      <img src="logo_itsanet.png" alt="Logo ITSANET" class="logo">
+      <h2 style="color: #ef4444; margin:0; font-size: 28px;">¡TIEMPO AGOTADO! ⏳</h2>
+      <p style="color: #4b5563; margin-top: 15px; font-size: 15px;">
+        Pasaron más de 2 minutos desde que escaneaste el código. Por seguridad, la marcación ha sido bloqueada.
+      </p>
+      <div style="background-color: #fef2f2; border: 2px solid #ef4444; border-radius: 12px; padding: 20px; margin-top: 20px;">
+        <p style="color: #b91c1c; font-weight: 800; font-size: 16px; margin: 0; text-transform: uppercase;">
+          ⚠️ PASO OBLIGATORIO:
+        </p>
+        <p style="color: #991b1b; font-weight: 600; font-size: 15px; margin-top: 12px; text-align: left;">
+          1️⃣ CIERRA ESTA PESTAÑA por completo.<br><br>
+          2️⃣ VUELVE A ESCANEAR el código QR físico.
+        </p>
+      </div>
+    `;
     return;
   }
 
   const nombre = document.getElementById("nombre").value;
   if (!nombre) return alert("Por favor, selecciona tu nombre.");
-
-  const ref = doc(db, "registros", nombre + "_" + hoy);
-  const snap = await getDoc(ref);
+  const ref = doc(db, "registros", nombre + "_" + hoy); const snap = await getDoc(ref);
   if (snap.exists()) return alert("El almuerzo de hoy ya ha sido registrado.");
 
   document.getElementById("salidaBtn").innerText = "Registrando..."; document.getElementById("salidaBtn").disabled = true;
 
   try {
     await setDoc(ref, { nombre, fecha: hoy, salida: serverTimestamp(), regreso: null });
-    
-    // ✅ Borrar la memoria oculta tras un registro exitoso para que al día siguiente funcione normal
-    localStorage.removeItem(llaveMemoria);
-
+    sessionStorage.removeItem(llaveMemoria);
     document.getElementById("salidaBtn").innerText = "Registrar Salida"; setTimeout(verEstado, 1000);
   } catch (error) {
     alert("Hubo un error al registrar. Intenta de nuevo."); document.getElementById("salidaBtn").innerText = "Registrar Salida"; document.getElementById("salidaBtn").disabled = false;

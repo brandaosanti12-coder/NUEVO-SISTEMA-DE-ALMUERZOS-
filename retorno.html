@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Registro - Retorno Almuerzo</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -48,8 +48,8 @@
 </head>
 <body>
 
-<div class="box">
-  <img src="logo_itsanet.jpg" alt="Logo ITSANET" class="logo">
+<div class="box" id="contenedorPrincipal">
+  <img src="logo_itsanet.png" alt="Logo ITSANET" class="logo">
   
   <h2>Retorno Almuerzo</h2>
   <div class="form-group">
@@ -67,7 +67,7 @@
       <option value="">-- Seleccionar --</option>
     </select>
   </div>
-  <button onclick="registrarRetorno()">Registrar Retorno</button>
+  <button id="retornoBtn" onclick="registrarRetorno()">Registrar Retorno</button>
   <div class="status-area" id="resultado"></div>
 </div>
 
@@ -76,45 +76,27 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore, doc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const params = new URLSearchParams(window.location.search);
-const token = params.get("token"); 
-const tipo = params.get("tipo"); 
-const hoy = new Date().toLocaleDateString('sv-SE');
+const token = params.get("token"); const tipo = params.get("tipo"); const hoy = new Date().toLocaleDateString('sv-SE');
 
-// Validación
 if (token !== hoy || tipo !== "retorno") {
-  document.body.innerHTML = `<div class="box"><img src="logo_itsanet.jpg" alt="Logo ITSANET" class="logo"><h2 style="color:red">Acceso Denegado</h2><p>El código escaneado no es válido para hoy.</p></div>`; throw new Error();
+  document.getElementById("contenedorPrincipal").innerHTML = `
+    <img src="logo_itsanet.png" alt="Logo ITSANET" class="logo">
+    <h2 style="color:red">Acceso Denegado</h2>
+    <p>QR incorrecto o de un día anterior.</p>`; 
+  throw new Error();
 }
 
-// ⏳ SISTEMA ANTI-TRAMPAS (Bloquea recargas de página y demoras)
 const llaveMemoria = "tiempo_retorno_" + hoy;
-let tiempoApertura = localStorage.getItem(llaveMemoria);
+let tiempoApertura = sessionStorage.getItem(llaveMemoria);
 
 if (!tiempoApertura) {
   tiempoApertura = Date.now();
-  localStorage.setItem(llaveMemoria, tiempoApertura);
+  sessionStorage.setItem(llaveMemoria, tiempoApertura);
 }
 
-if (Date.now() - parseInt(tiempoApertura) > 120000) {
-  mostrarAlertaCaducado();
-  throw new Error("Tiempo excedido. Recarga bloqueada.");
-}
-
-function mostrarAlertaCaducado() {
-  document.body.innerHTML = `
-    <div class="box" style="text-align: center;">
-      <img src="logo_itsanet.jpg" alt="Logo ITSANET" class="logo">
-      <h2 style="color: #ef4444; margin:0;">¡Tiempo agotado! ⏳</h2>
-      <p style="color: #6b7280; margin-top: 15px; line-height: 1.5;">
-        Para llevar un registro justo, la marcación debe hacerse en el momento exacto de escanear el código. <br><br>
-        <strong>Por favor, vuelve a escanear el QR físico. 😊</strong>
-      </p>
-    </div>`;
-}
-
-// Firebase
 const app = initializeApp({ apiKey:"AIzaSyCyzE_spj6e0VASt5FP50_5m2Ya-GJloM4", authDomain:"registro-bionetrico.firebaseapp.com", projectId:"registro-bionetrico" });
 const db = getFirestore(app);
-const empleados = { PLAYA:["USUARIO DE PRUEBAS","RENE CHICAIZA","KEVIN ESCOBAR","ESTEBAN MALDONADO","RUBEN YANEZ"], FACTURACION:["STEFANY PISANAN","ANA MOROCHO","MARLON TENE","BORIS CABRERA"], OFICINA:["BRANDON NAVARRETE","ANDRES SUASTE","HECTOR TORRES","IBETH BERMEO","MARIA JOSE CASTRO","MARIA JOSE SANDOVAL","JIMI CELI"] };
+const empleados = { PLAYA:["RENE CHICAIZA","KEVIN ESCOBAR","ESTEBAN MALDONADO","RUBEN YANEZ"], FACTURACION:["STEFANY PISANAN","ANA MOROCHO","MARLON TENE"], OFICINA:["BRANDON NAVARRETE","ANDRES SUASTE","HECTOR TORRES","IBETH BERMEO","MARIA JOSE CASTRO","MARIA JOSE SANDOVAL","JIMI CELI"] };
 
 window.cargarEmpleados = function(){
   const a=document.getElementById("area").value; const s=document.getElementById("nombre"); s.innerHTML='<option value="">-- Seleccionar --</option>';
@@ -124,13 +106,29 @@ window.cargarEmpleados = function(){
 
 window.verEstado = async function(){
   const nombre=document.getElementById("nombre").value; const ref=doc(db,"registros",nombre+"_"+hoy); const snap=await getDoc(ref);
-  if(!snap.exists()) return; const d=snap.data(); if(d.salida){ window.salidaGlobal=d.salida.seconds*1000; }
+  if(!snap.exists()) return; const d=snap.data(); 
+  if(d.salida){ window.salidaGlobal=d.salida.seconds*1000; }
+  if(d.regreso) { document.getElementById("retornoBtn").disabled = true; } 
 };
 
 window.registrarRetorno = async function(){
-  // Segunda validación: Al momento de hacer clic
   if (Date.now() - parseInt(tiempoApertura) > 120000) {
-    mostrarAlertaCaducado();
+    document.getElementById("contenedorPrincipal").innerHTML = `
+      <img src="logo_itsanet.png" alt="Logo ITSANET" class="logo">
+      <h2 style="color: #ef4444; margin:0; font-size: 28px;">¡TIEMPO AGOTADO! ⏳</h2>
+      <p style="color: #4b5563; margin-top: 15px; font-size: 15px;">
+        Pasaron más de 2 minutos desde que escaneaste el código. Por seguridad, la marcación ha sido bloqueada.
+      </p>
+      <div style="background-color: #fef2f2; border: 2px solid #ef4444; border-radius: 12px; padding: 20px; margin-top: 20px;">
+        <p style="color: #b91c1c; font-weight: 800; font-size: 16px; margin: 0; text-transform: uppercase;">
+          ⚠️ PASO OBLIGATORIO:
+        </p>
+        <p style="color: #991b1b; font-weight: 600; font-size: 15px; margin-top: 12px; text-align: left;">
+          1️⃣ CIERRA ESTA PESTAÑA por completo.<br><br>
+          2️⃣ VUELVE A ESCANEAR el código QR físico.
+        </p>
+      </div>
+    `;
     return;
   }
 
@@ -139,13 +137,14 @@ window.registrarRetorno = async function(){
   
   await updateDoc(ref,{regreso:serverTimestamp()});
   
-  // ✅ Borrar la memoria oculta tras un registro exitoso
-  localStorage.removeItem(llaveMemoria);
+  sessionStorage.removeItem(llaveMemoria); 
 
   const snap=await getDoc(ref); const d=snap.data(); const usado = ((d.regreso.seconds*1000) - (d.salida.seconds*1000))/60000;
 
   if(usado>60){ document.getElementById("resultado").innerHTML=`<span class="rojo">Tiempo excedido: ${Math.floor(usado-60)} min extra</span>`; } 
   else { document.getElementById("resultado").innerHTML=`<span class="verde">Llegada a tiempo (Usado: ${Math.floor(usado)} min)</span>`; }
+  
+  document.getElementById("retornoBtn").disabled = true;
 };
 </script>
 </body>
