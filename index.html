@@ -131,7 +131,7 @@ function iniciarTimer(salida, nombre) {
   const timerElement = document.getElementById("timer"); timerElement.classList.remove("rojo");
   timerInterval = setInterval(() => {
     const restante = (3600000 - (Date.now() - salida));
-    if (restante <= 0) { timerElement.innerText = "TIEMPO EXCEDIDO"; timerElement.classList.add("rojo"); return; }
+    if (restante <= 0) { timerElement.innerText = "ALMUERZO CULMINADO"; timerElement.classList.add("rojo"); return; }
     const m = Math.floor(restante/60000).toString().padStart(2, '0'); const s = Math.floor((restante%60000)/1000).toString().padStart(2, '0');
     timerElement.innerText = `${m}:${s} min`;
   }, 1000);
