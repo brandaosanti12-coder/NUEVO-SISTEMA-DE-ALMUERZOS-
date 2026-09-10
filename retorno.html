@@ -114,7 +114,7 @@ function mostrarAlertaCaducado() {
 // Firebase
 const app = initializeApp({ apiKey:"AIzaSyCyzE_spj6e0VASt5FP50_5m2Ya-GJloM4", authDomain:"registro-bionetrico.firebaseapp.com", projectId:"registro-bionetrico" });
 const db = getFirestore(app);
-const empleados = { PLAYA:["USUARIO DE PRUEBAS","RENE CHICAIZA","KEVIN ESCOBAR","ESTEBAN MALDONADO","RUBEN YANEZ"], FACTURACION:["STEFANY PISANAN","ANA MOROCHO","MARLON TENE"], OFICINA:["BRANDON NAVARRETE","ANDRES SUASTE","HECTOR TORRES","IBETH BERMEO","MARIA JOSE CASTRO","MARIA JOSE SANDOVAL","JIMI CELI"] };
+const empleados = { PLAYA:["USUARIO DE PRUEBAS","RENE CHICAIZA","KEVIN ESCOBAR","ESTEBAN MALDONADO","RUBEN YANEZ"], FACTURACION:["STEFANY PISANAN","ANA MOROCHO","MARLON TENE","BORIS CABRERA"], OFICINA:["BRANDON NAVARRETE","ANDRES SUASTE","HECTOR TORRES","IBETH BERMEO","MARIA JOSE CASTRO","MARIA JOSE SANDOVAL","JIMI CELI"] };
 
 window.cargarEmpleados = function(){
   const a=document.getElementById("area").value; const s=document.getElementById("nombre"); s.innerHTML='<option value="">-- Seleccionar --</option>';
