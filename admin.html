@@ -8,22 +8,58 @@
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 <style>
-  :root { --primary: #4f46e5; --success: #10b981; --danger: #ef4444; --bg: #f3f4f6; --card: #ffffff; --text-main: #1f2937; --border: #e5e7eb; }
+  :root { --primary: #4f46e5; --success: #10b981; --danger: #ef4444; --bg: #f3f4f6; --card: #ffffff; --text-main: #1f2937; --text-muted: #6b7280; --border: #e5e7eb; }
   body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); padding: 30px 20px; margin: 0; }
   .container { max-width: 1000px; margin: 0 auto; background: var(--card); padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
   .logo { max-width: 140px; height: auto; margin: 0 auto 15px auto; display: block; }
   h2 { font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 25px; border-bottom: 2px solid var(--border); padding-bottom: 15px; text-align: center; }
+  
   .actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
   button { font-family: inherit; font-weight: 600; padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 14px; }
   .btn-primary { background: var(--primary); color: white; } .btn-primary:hover { background: #4338ca; }
   .btn-success { background: var(--success); color: white; } .btn-success:hover { background: #059669; }
   .btn-danger { background: var(--danger); color: white; } .btn-danger:hover { background: #dc2626; }
+  .btn-config { background: #6366f1; color: white; } .btn-config:hover { background: #4f46e5; }
+  .btn-cancel { background: #9ca3af; color: white; } .btn-cancel:hover { background: #6b7280; }
+  
   .table-container { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
   table { width: 100%; border-collapse: collapse; background: white; }
   th, td { padding: 14px; text-align: left; border-bottom: 1px solid var(--border); }
   th { background-color: #f9fafb; font-weight: 600; color: #4b5563; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
   tr:last-child td { border-bottom: none; } tr:hover { background-color: #f9fafb; }
   .rojo { color: var(--danger); font-weight: 700; background: #fef2f2; padding: 4px 8px; border-radius: 6px; display: inline-block; }
+  
+  /* ESTILOS MODALES */
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.7); display: none; justify-content: center; align-items: center; z-index: 1000; }
+  .modal-content { background: var(--card); padding: 30px; border-radius: 16px; width: 95%; max-width: 700px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 15px; }
+  .modal-header h3 { margin: 0; color: var(--primary); font-size: 20px; }
+  .close-btn { background: none; color: #9ca3af; font-size: 24px; cursor: pointer; padding: 0; line-height: 1; }
+  .close-btn:hover { color: var(--danger); background: none; }
+  
+  /* GESTIÓN DE PERSONAL */
+  .gestion-controls { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; align-items: center; background: #f9fafb; padding: 15px; border-radius: 10px; border: 1px solid var(--border); }
+  .gestion-controls select, .gestion-controls input { padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; }
+  .gestion-controls input { flex: 1; min-width: 200px; text-transform: uppercase; }
+  .gestion-controls input:focus, .gestion-controls select:focus { outline: none; border-color: var(--primary); }
+  
+  /* CUADRÍCULA POR ÁREAS Y DRAG & DROP */
+  .grid-areas { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+  .area-card { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: white; display: flex; flex-direction: column; }
+  .area-header { background: #f3f4f6; padding: 12px; font-weight: 700; font-size: 13px; text-align: center; color: var(--text-main); border-bottom: 1px solid var(--border); }
+  .area-list { list-style: none; padding: 0; margin: 0; flex-grow: 1; min-height: 60px; transition: background 0.2s; }
+  .area-list.drag-over { background: #e0e7ff; }
+  .area-list li { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 13px; cursor: grab; background: white; }
+  .area-list li:active { cursor: grabbing; }
+  .area-list li:last-child { border-bottom: none; }
+  
+  .empleado-nombre { cursor: pointer; color: var(--text-main); font-weight: 500; flex-grow: 1; transition: color 0.2s; }
+  .empleado-nombre:hover { color: var(--primary); text-decoration: underline; }
+  .btn-delete-small { background: #fee2e2; color: #dc2626; border: none; border-radius: 6px; padding: 4px 8px; font-size: 11px; cursor: pointer; transition: 0.2s; font-weight: bold; margin-left: 10px; }
+  .btn-delete-small:hover { background: #f87171; color: white; }
+  
+  /* MODAL CONFIRMACIÓN Y EDICIÓN */
+  .modal-small-content { background: white; padding: 30px; border-radius: 16px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
 </style>
 </head>
 <body>
@@ -33,6 +69,7 @@
   <h2>Panel de Registros - Almuerzos</h2>
 
   <div class="actions">
+    <button class="btn-config" onclick="abrirModal()">⚙️ Gestión de Personal</button>
     <button class="btn-primary" onclick="exportar()">⬇ Descargar Excel Almuerzos</button>
     <button id="btn-descargar-reporte" class="btn-success">⬇ Descargar Reporte Personal</button>
     <button class="btn-danger" onclick="borrarTodo()">🗑 Eliminar Registros</button>
@@ -48,14 +85,66 @@
   </div>
 </div>
 
+<!-- VENTANA FLOTANTE PRINCIPAL (GESTIÓN DE PERSONAL) -->
+<div id="modal-gestion" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>👥 Gestión de Personal</h3>
+      <button class="close-btn" onclick="cerrarModal()">✖</button>
+    </div>
+    
+    <div class="gestion-controls">
+      <div style="width: 100%; margin-bottom: 5px; font-size: 13px; font-weight: 600; color: #4b5563;">Agregar nuevo empleado:</div>
+      <select id="area-gestion">
+        <option value="PLAYA">PLAYA</option>
+        <option value="FACTURACION">FACTURACIÓN</option>
+        <option value="OFICINA">OFICINA</option>
+      </select>
+      <input type="text" id="nuevo-empleado" placeholder="Ej: JUAN PEREZ">
+      <button class="btn-success" onclick="agregarEmpleado()">➕ Agregar</button>
+    </div>
+
+    <!-- Contenedor dinámico de tarjetas por área -->
+    <div id="grid-empleados" class="grid-areas">
+        <div style="grid-column: 1 / -1; text-align: center; color: var(--text-muted);">Cargando empleados...</div>
+    </div>
+  </div>
+</div>
+
+<!-- VENTANA FLOTANTE DE EDICIÓN DE NOMBRE -->
+<div id="modal-editar" class="modal-overlay" style="z-index: 2000;">
+  <div class="modal-small-content" style="text-align: left;">
+    <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 15px; font-size: 18px;">✏️ Editar Empleado</h3>
+    <input type="text" id="input-editar-nombre" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; margin-bottom: 20px; text-transform: uppercase; box-sizing: border-box;" autocomplete="off">
+    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+      <button class="btn-cancel" onclick="cerrarEditar()">Cancelar</button>
+      <button class="btn-success" onclick="guardarEdicion()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- VENTANA FLOTANTE DE CONFIRMACIÓN DE ELIMINACIÓN -->
+<div id="modal-confirmacion" class="modal-overlay" style="z-index: 2000;">
+  <div class="modal-small-content">
+    <h3 style="color: var(--danger); margin-top: 0; margin-bottom: 15px; font-size: 20px;">⚠️ Confirmar Eliminación</h3>
+    <p id="mensaje-confirmacion" style="color: var(--text-main); margin-bottom: 25px; line-height: 1.5; font-size: 15px;"></p>
+    <div style="display: flex; gap: 10px; justify-content: center;">
+      <button class="btn-cancel" onclick="cerrarConfirmacion()">Cancelar</button>
+      <button class="btn-danger" onclick="ejecutarEliminacion()">Sí, eliminar</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, deleteDoc, doc, setDoc, getDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfigProd = { apiKey: "AIzaSyCyzE_spj6e0VASt5FP50_5m2Ya-GJloM4", authDomain: "registro-bionetrico.firebaseapp.com", projectId: "registro-bionetrico" };
 const appProd = initializeApp(firebaseConfigProd); const dbProd = getFirestore(appProd);
 const firebaseConfigBiometrico = { apiKey: "AIzaSyB14PmZWs0Yjlx2WEqqKoHyvEHrqTweCrA", authDomain: "biometrico-empleados.firebaseapp.com", projectId: "biometrico-empleados", storageBucket: "biometrico-empleados.firebasestorage.app", messagingSenderId: "669152231455", appId: "1:669152231455:web:d2f7ae91e278eb854bd52a" };
 const appBiometrico = initializeApp(firebaseConfigBiometrico, "AppBiometrico"); const dbBiometrico = getFirestore(appBiometrico);
+
+// --- 1. LÓGICA DE REGISTROS DE ALMUERZO ---
 const tabla = document.getElementById("tabla");
 
 function formatearHora(timestamp) { if (!timestamp || !timestamp.seconds) return ""; return new Date(timestamp.seconds * 1000).toLocaleTimeString(); }
@@ -90,9 +179,7 @@ document.getElementById('btn-descargar-reporte').addEventListener('click', async
         const querySnapshot = await getDocs(collection(dbBiometrico, "marcaciones")); const registrosExcel = [];
         querySnapshot.forEach((docSnap) => {
             const datos = docSnap.data();
-            const linkEntrada = datos.enlaceGoogleMapsEntrada ? (datos.enlaceGoogleMapsEntrada.match(/href="([^"]*)/)?.[1] || "-") : "-";
-            const linkSalida = datos.enlaceGoogleMapsSalida ? (datos.enlaceGoogleMapsSalida.match(/href="([^"]*)/)?.[1] || "-") : "-";
-            registrosExcel.push({ "Fecha": datos.fecha, "Cédula": datos.cedula, "Nombres": datos.nombre, "Ciudad": datos.ciudad, "Entrada": datos.horaEntrada || "-", "Atraso": datos.atraso || "-", "Mapa Entrada": linkEntrada, "Salida": datos.horaSalida || "Sin marcar", "Trabajado": datos.tiempoTrabajado || "-", "Horas Extras": datos.horasExtras || "-", "Mapa Salida": linkSalida, "Estado": datos.estado });
+            registrosExcel.push({ "Fecha": datos.fecha, "Cédula": datos.cedula, "Nombres": datos.nombre, "Ciudad": datos.ciudad, "Entrada": datos.horaEntrada || "-", "Atraso": datos.atraso || "-", "Salida": datos.horaSalida || "Sin marcar", "Trabajado": datos.tiempoTrabajado || "-", "Horas Extras": datos.horasExtras || "-", "Estado": datos.estado });
         });
         if (registrosExcel.length === 0) { alert("No hay registros guardados en la base de datos aún."); btn.disabled = false; btn.innerText = "Descargar Reporte Personal"; return; }
         btn.innerText = "Generando archivo Excel...";
@@ -103,11 +190,169 @@ document.getElementById('btn-descargar-reporte').addEventListener('click', async
 });
 
 window.borrarTodo = async function () {
-  const codigo = prompt("⚠️ Ingrese el código de autorización para eliminar TODOS los registros:");
-  if (codigo !== "12345") { if (codigo !== null) { alert("❌ Código incorrecto. Operación cancelada."); } return; }
+  const codigo = prompt("⚠️ Ingrese el código para eliminar TODOS los registros:");
+  if (codigo !== "12345") { if (codigo !== null) alert("❌ Código incorrecto."); return; }
   const querySnapshot = await getDocs(collection(dbProd, "registros"));
   for (const documento of querySnapshot.docs) { await deleteDoc(doc(dbProd, "registros", documento.id)); }
-  alert("✅ Registros eliminados correctamente"); cargar();
+  alert("✅ Registros eliminados"); cargar();
+};
+
+// --- 2. LÓGICA DE LA VENTANA FLOTANTE Y GESTIÓN ---
+let empleadosDb = {};
+let empleadoAEliminar = null;
+let empleadoAEditar = null;
+let dragInfo = null;
+
+window.abrirModal = function() {
+    document.getElementById('modal-gestion').style.display = 'flex';
+    cargarListaEmpleados(); 
+};
+
+window.cerrarModal = function() {
+    document.getElementById('modal-gestion').style.display = 'none';
+};
+
+window.cargarListaEmpleados = async function() {
+    const ref = doc(dbProd, "configuracion", "empleados");
+    const snap = await getDoc(ref);
+    
+    if (snap.exists()) {
+        empleadosDb = snap.data();
+    } else {
+        empleadosDb = { PLAYA: [], FACTURACION: [], OFICINA: [] };
+    }
+    
+    const grid = document.getElementById("grid-empleados");
+    grid.innerHTML = "";
+    
+    for (const area of ["PLAYA", "FACTURACION", "OFICINA"]) {
+        const tituloArea = area === "FACTURACION" ? "FACTURACIÓN" : area;
+        let htmlArea = `
+        <div class="area-card">
+            <div class="area-header">${tituloArea}</div>
+            <ul class="area-list" ondragover="allowDrop(event, this)" ondragleave="dragLeave(event, this)" ondrop="drop(event, '${area}', this)">`;
+                
+        if(empleadosDb[area] && empleadosDb[area].length > 0) {
+            empleadosDb[area].forEach(nombre => {
+                htmlArea += `
+                <li draggable="true" ondragstart="dragStart(event, '${area}', '${nombre}')">
+                    <span class="empleado-nombre" onclick="abrirEditar('${area}', '${nombre}')" title="Clic para editar">${nombre}</span>
+                    <button class="btn-delete-small" onclick="abrirConfirmacion('${area}', '${nombre}')">✖</button>
+                </li>`;
+            });
+        }
+        
+        htmlArea += `</ul></div>`;
+        grid.innerHTML += htmlArea;
+    }
+};
+
+window.agregarEmpleado = async function() {
+    const area = document.getElementById("area-gestion").value;
+    const input = document.getElementById("nuevo-empleado");
+    const nombre = input.value.trim().toUpperCase();
+    
+    if(!nombre) return alert("Por favor, escribe el nombre del empleado.");
+    
+    const ref = doc(dbProd, "configuracion", "empleados");
+    await updateDoc(ref, { [area]: arrayUnion(nombre) });
+    
+    input.value = "";
+    cargarListaEmpleados(); 
+};
+
+// --- 3. LÓGICA DE EDICIÓN ---
+window.abrirEditar = function(area, nombre) {
+    empleadoAEditar = { area, nombre };
+    document.getElementById("input-editar-nombre").value = nombre;
+    document.getElementById("modal-editar").style.display = "flex";
+    document.getElementById("input-editar-nombre").focus();
+};
+
+window.cerrarEditar = function() {
+    document.getElementById("modal-editar").style.display = "none";
+    empleadoAEditar = null;
+};
+
+window.guardarEdicion = async function() {
+    if(!empleadoAEditar) return;
+    const nuevoNombre = document.getElementById("input-editar-nombre").value.trim().toUpperCase();
+    
+    if(!nuevoNombre || nuevoNombre === empleadoAEditar.nombre) {
+        cerrarEditar();
+        return;
+    }
+    
+    const { area, nombre: viejoNombre } = empleadoAEditar;
+    
+    // Para editar con seguridad en un arreglo, modificamos la base local y la subimos completa
+    const indice = empleadosDb[area].indexOf(viejoNombre);
+    if(indice > -1) {
+        empleadosDb[area][indice] = nuevoNombre;
+        const ref = doc(dbProd, "configuracion", "empleados");
+        await updateDoc(ref, { [area]: empleadosDb[area] });
+    }
+    
+    cerrarEditar();
+    cargarListaEmpleados();
+};
+
+// --- 4. LÓGICA DE ARRASTRAR Y SOLTAR (DRAG & DROP) ---
+window.dragStart = function(event, area, nombre) {
+    dragInfo = { area, nombre };
+    event.dataTransfer.effectAllowed = "move";
+};
+
+window.allowDrop = function(event, el) {
+    event.preventDefault();
+    el.classList.add('drag-over');
+};
+
+window.dragLeave = function(event, el) {
+    el.classList.remove('drag-over');
+};
+
+window.drop = async function(event, targetArea, el) {
+    event.preventDefault();
+    el.classList.remove('drag-over');
+    
+    if(!dragInfo) return;
+    const { area: oldArea, nombre } = dragInfo;
+    dragInfo = null; // Reset
+    
+    if(oldArea === targetArea) return; // Si lo suelta en la misma área, no hacer nada
+    
+    const ref = doc(dbProd, "configuracion", "empleados");
+    
+    // Quitamos del área vieja y añadimos a la nueva de manera atómica
+    await updateDoc(ref, {
+        [oldArea]: arrayRemove(nombre),
+        [targetArea]: arrayUnion(nombre)
+    });
+    
+    cargarListaEmpleados();
+};
+
+// --- 5. LÓGICA DE CONFIRMACIÓN AL ELIMINAR ---
+window.abrirConfirmacion = function(area, nombre) {
+    empleadoAEliminar = { area, nombre };
+    const tituloArea = area === "FACTURACION" ? "FACTURACIÓN" : area;
+    document.getElementById("mensaje-confirmacion").innerHTML = `¿Estás seguro de eliminar a <strong>${nombre}</strong> del área de <strong>${tituloArea}</strong>?`;
+    document.getElementById("modal-confirmacion").style.display = "flex";
+};
+
+window.cerrarConfirmacion = function() {
+    document.getElementById("modal-confirmacion").style.display = "none";
+    empleadoAEliminar = null;
+};
+
+window.ejecutarEliminacion = async function() {
+    if(!empleadoAEliminar) return;
+    const { area, nombre } = empleadoAEliminar;
+    const ref = doc(dbProd, "configuracion", "empleados");
+    await updateDoc(ref, { [area]: arrayRemove(nombre) });
+    cerrarConfirmacion();
+    cargarListaEmpleados(); 
 };
 
 cargar();
